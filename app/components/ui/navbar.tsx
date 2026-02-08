@@ -18,7 +18,6 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    // FIX: z-[9999] ensures this stays above everything (scanlines are usually z-50)
     <nav className="fixed top-0 w-full z-[9999] border-b border-white/5 bg-black/80 backdrop-blur-xl h-16">
       <div className="h-full px-6 flex justify-between items-center max-w-7xl mx-auto">
         
@@ -53,7 +52,7 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* MOBILE HAMBURGER BUTTON - Z-Index boosted */}
+        {/* MOBILE HAMBURGER BUTTON */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden flex flex-col gap-1.5 p-2 z-[10000] relative group"
@@ -73,7 +72,7 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* MOBILE DRAWER (FULL SCREEN OVERLAY) */}
+      {/* MOBILE DRAWER */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
@@ -81,7 +80,8 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden fixed inset-0 bg-black/95 backdrop-blur-3xl z-[9990] flex flex-col pt-24 px-6"
+            // UPDATED: bg-black (Solid) removes all transparency/blur issues
+            className="md:hidden fixed inset-0 bg-black z-[9990] flex flex-col pt-24 px-6"
           >
             <div className="flex flex-col gap-8 font-mono">
               {NAV_ITEMS.map((item, i) => (
