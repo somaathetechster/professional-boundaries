@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip
 } from 'recharts';
-import { Ledger } from '../../lib/ledger'; // <--- NEW IMPORT
+import { Ledger } from '../../lib/ledger';
 
 // ------------------------------------------------------------------
 // CONFIG & MOCK DATA (For Visuals)
@@ -67,7 +67,7 @@ export default function UltraEngine() {
       setTimeout(() => {
         setOut(data);
         
-        // <--- NEW: SAVE TRANSACTION TO LEDGER --->
+        // SAVE TRANSACTION TO LEDGER
         Ledger.saveTranslation(input, data);
         
         setStatus('COMPLETE');
@@ -86,7 +86,10 @@ export default function UltraEngine() {
       {/* BACKGROUND FX */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.02] bg-[linear-gradient(90deg,white_1px,transparent_1px),linear-gradient(white_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      <main className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 relative z-10">
+      {/* MOBILE OPTIMIZATION FIX:
+         Changed grid-cols-12 to grid-cols-1 (mobile) -> lg:grid-cols-12 (desktop)
+      */}
+      <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative z-10 pb-12">
         
         {/* =========================================================
             LEFT COLUMN: INPUT & CONTROL
@@ -104,13 +107,14 @@ export default function UltraEngine() {
                 Translation_Engine_v4.0
               </span>
             </motion.div>
-            <h1 className="text-5xl font-black text-white uppercase tracking-tighter">
+            <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
               Input <span className="text-white/20">Stream</span>
             </h1>
           </header>
 
           {/* INPUT TERMINAL */}
-          <div className="relative group flex-1 min-h-[400px]">
+          {/* MOBILE FIX: Adaptive min-height */}
+          <div className="relative group flex-1 min-h-[350px] lg:min-h-[400px]">
             {/* The "Box" Glow */}
             <div className="absolute -inset-0.5 bg-gradient-to-b from-system-neon/30 to-blue-600/30 opacity-20 blur-md group-hover:opacity-40 transition duration-1000" />
             
@@ -204,7 +208,8 @@ export default function UltraEngine() {
               >
                 
                 {/* 1. THREAT HUD (The Chart) */}
-                <div className="terminal-border p-6 relative overflow-hidden min-h-[350px] flex items-center justify-center">
+                {/* MOBILE FIX: Adaptive height */}
+                <div className="terminal-border p-6 relative overflow-hidden min-h-[300px] md:min-h-[350px] flex items-center justify-center">
                   <div className="absolute top-0 right-0 p-4 text-right z-10">
                     <span className="block text-[40px] leading-none font-black text-system-alert">
                       {out.scores?.aggression || 85}%
@@ -213,7 +218,7 @@ export default function UltraEngine() {
                   </div>
 
                   {/* Explicit Dimensions for Recharts Container */}
-                  <div className="w-full h-[300px] relative">
+                  <div className="w-full h-[250px] md:h-[300px] relative">
                     <ResponsiveContainer width="100%" height="100%">
                       <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
                         { subject: 'Aggression', A: out.scores?.aggression || 0, fullMark: 100 },
@@ -275,7 +280,7 @@ export default function UltraEngine() {
               </motion.div>
             ) : (
               // IDLE STATE (Placeholder)
-              <div className="h-full border border-white/5 bg-white/[0.02] flex flex-col items-center justify-center min-h-[600px] text-center p-12">
+              <div className="h-full border border-white/5 bg-white/[0.02] flex flex-col items-center justify-center min-h-[350px] md:min-h-[600px] text-center p-12">
                 <div className="w-32 h-32 rounded-full border border-white/10 flex items-center justify-center mb-8 relative">
                   <div className="absolute inset-0 border border-white/20 rounded-full animate-ping opacity-20" />
                   <div className="w-2 h-2 bg-white/20 rounded-full" />
