@@ -1,19 +1,21 @@
 // app/page.tsx
 'use client';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+// ------------------------------------------------------------------
+// CONFIG: THE DECRYPTION ALPHABET
+// ------------------------------------------------------------------
+const CHARS = "-_~=\\/[]{}!@#$%^&*+?";
 
 export default function Home() {
   const [booting, setBooting] = useState(true);
-  
-  // FIX: track window scroll instead of a specific ref to prevent hydration errors during boot
   const { scrollYProgress } = useScroll();
   
-  // Parallax physics for deep scrolling authority
+  // Parallax physics
   const yHero = useTransform(scrollYProgress, [0, 1], [0, -300]);
   const yOpac = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  // Simulate System Boot
   useEffect(() => {
     const timer = setTimeout(() => setBooting(false), 2800);
     return () => clearTimeout(timer);
@@ -37,7 +39,7 @@ export default function Home() {
 
             {/* SECTION 1: HERO COMMAND CENTER */}
             <section className="h-screen flex flex-col items-center justify-center sticky top-0 z-10">
-              <motion.div style={{ y: yHero, opacity: yOpac }} className="text-center space-y-12 max-w-4xl px-6 relative">
+              <motion.div style={{ y: yHero, opacity: yOpac }} className="text-center space-y-12 max-w-5xl px-6 relative">
                 
                 {/* Status Badge */}
                 <motion.div 
@@ -50,23 +52,35 @@ export default function Home() {
                   </span>
                 </motion.div>
 
-                {/* Main Typography */}
-                <h1 className="text-7xl md:text-[9rem] font-black tracking-tighter uppercase leading-[0.85] text-system-chrome">
-                  Surgical <br />
-                  <span className="text-transparent relative" style={{ WebkitTextStroke: '2px rgba(255,255,255,0.1)' }}>
-                    Authority
-                    <motion.span 
-                      className="absolute inset-0 text-system-neon/10 blur-sm"
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity }}
-                    >
-                      Authority
-                    </motion.span>
-                  </span>
-                </h1>
+                {/* --- THE NEW HYPER-GLITCH HEADLINE --- */}
+                <div className="relative group cursor-default">
+                  <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter uppercase leading-[0.85] text-system-chrome break-words">
+                    <DecryptedText text="Surgical" speed={50} />
+                    <br />
+                    <span className="text-transparent relative block mt-2 md:mt-4" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>
+                      <DecryptedText text="Authority" speed={70} delay={500} />
+                      
+                      {/* The Holographic Ghost Effect */}
+                      <motion.span 
+                        className="absolute inset-0 text-system-neon opacity-0 group-hover:opacity-40 blur-[2px] transition-opacity duration-300"
+                        style={{ x: 2, y: 2 }}
+                        aria-hidden="true"
+                      >
+                        Authority
+                      </motion.span>
+                      <motion.span 
+                        className="absolute inset-0 text-red-500 opacity-0 group-hover:opacity-40 blur-[2px] transition-opacity duration-300"
+                        style={{ x: -2, y: -2 }}
+                        aria-hidden="true"
+                      >
+                        Authority
+                      </motion.span>
+                    </span>
+                  </h1>
+                </div>
 
                 {/* Mission Statement */}
-                <p className="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                <p className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
                   Industrial infrastructure for professionals. We turn the internal question 
                   <span className="text-white italic px-2">"Am I overreacting?"</span> 
                   into the external action 
@@ -90,7 +104,6 @@ export default function Home() {
             <section className="relative z-20 bg-system-zinc border-t border-white/10 min-h-screen flex items-center justify-center py-24">
               <div className="max-w-7xl w-full px-6 grid lg:grid-cols-2 gap-20 items-center">
                 
-                {/* Data Context */}
                 <div className="space-y-10">
                   <div className="space-y-4">
                     <span className="text-system-neon font-mono text-xs uppercase tracking-[0.4em]">
@@ -102,7 +115,7 @@ export default function Home() {
                   </div>
                   
                   <p className="text-lg text-white/40 leading-relaxed max-w-lg">
-                    92% of boundary violations occur in the "Transition Phrase"—where professionals reflexively apologize for existing. Our OS visualizes these neural leaks in real-time using detecting algorithms.
+                    92% of boundary violations occur in the "Transition Phrase"—where professionals reflexively apologize for existing. Our OS visualizes these neural leaks in real-time.
                   </p>
 
                   <div className="grid grid-cols-2 gap-12 border-t border-white/5 pt-10">
@@ -123,18 +136,13 @@ export default function Home() {
                     Live_Feed // Analyzing_Inputs
                   </div>
                   
-                  {/* The Grid */}
                   <div className="grid grid-cols-8 grid-rows-8 gap-2 w-full h-full opacity-60">
                     {Array.from({ length: 64 }).map((_, i) => (
                       <HeatmapCell key={i} index={i} />
                     ))}
                   </div>
 
-                  {/* Overlay UI */}
                   <div className="absolute inset-0 pointer-events-none border-[0.5px] border-white/5" />
-                  <div className="absolute bottom-4 right-6 text-[10px] font-mono text-white/20 uppercase tracking-widest">
-                    Sector_7G // Active
-                  </div>
                 </div>
 
               </div>
@@ -153,18 +161,14 @@ export default function Home() {
                 <div className="flex gap-8 text-[10px] uppercase tracking-widest text-white/40 font-mono">
                   <a href="#" className="hover:text-system-neon transition-colors">Documentation</a>
                   <a href="#" className="hover:text-system-neon transition-colors">API_Status</a>
-                  <a href="#" className="hover:text-system-neon transition-colors">Legal_Core</a>
                 </div>
 
                 <div className="text-right">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full">
                     <div className="w-1.5 h-1.5 bg-system-neon rounded-full" />
-                    <span className="text-[10px] text-system-neon font-mono tracking-widest">ALL_SYSTEMS_OPERATIONAL</span>
+                    <span className="text-[10px] text-system-neon font-mono tracking-widest">SYSTEM_ONLINE</span>
                   </div>
                 </div>
-              </div>
-              <div className="text-center mt-20 text-[10px] text-white/60 font-mono uppercase">
-                © 2026 Professional Boundaries Inc. Proprietary Infrastructure.
               </div>
             </footer>
 
@@ -172,6 +176,48 @@ export default function Home() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+// ------------------------------------------------------------------
+// COMPONENT: DECRYPTED TEXT (The "Hacker" Effect)
+// ------------------------------------------------------------------
+function DecryptedText({ text, speed = 50, delay = 0 }: { text: string, speed?: number, delay?: number }) {
+  const [displayText, setDisplayText] = useState(text);
+  const [isHovering, setIsHovering] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    // Initial Animation on Load
+    if (!hasAnimated) {
+      setTimeout(() => animate(), delay);
+      setHasAnimated(true);
+    }
+  }, [delay, hasAnimated]);
+
+  const animate = () => {
+    let iteration = 0;
+    const interval = setInterval(() => {
+      setDisplayText(prev => 
+        text.split("").map((letter, index) => {
+          if (index < iteration) return text[index];
+          return CHARS[Math.floor(Math.random() * CHARS.length)];
+        }).join("")
+      );
+
+      if (iteration >= text.length) clearInterval(interval);
+      iteration += 1 / 3; // Controls how fast it resolves
+    }, speed);
+  };
+
+  return (
+    <motion.span 
+      onHoverStart={() => animate()} // Re-trigger on hover
+      className="inline-block cursor-default"
+      whileHover={{ scale: 1.02, color: "#fff" }}
+    >
+      {displayText}
+    </motion.span>
   );
 }
 
@@ -200,10 +246,6 @@ function BootSequence() {
           initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ delay: 0.5, duration: 2, ease: "circOut" }}
           className="h-1 bg-system-neon mt-8"
         />
-        <div className="flex justify-between text-[8px] text-system-neon/50 uppercase tracking-widest mt-2">
-          <span>Memory: OK</span>
-          <span>Crypto: OK</span>
-        </div>
       </div>
     </motion.div>
   );
@@ -223,19 +265,13 @@ function BootLine({ text, delay }: { text: string, delay: number }) {
 }
 
 function HeatmapCell({ index }: { index: number }) {
-  // Randomize initial activity for visual texture
   const isHot = [12, 18, 19, 27, 35, 36, 42, 49, 50, 58].includes(index);
-  
   return (
     <motion.div 
       className={`w-full h-full rounded-[1px] transition-all duration-300 ${
         isHot ? 'bg-system-neon/20' : 'bg-white/5'
       }`}
-      whileHover={{ 
-        scale: 1.1, 
-        backgroundColor: "var(--color-system-neon)",
-        boxShadow: "0 0 10px var(--color-system-neon)"
-      }}
+      whileHover={{ scale: 1.1, backgroundColor: "var(--color-system-neon)", boxShadow: "0 0 10px var(--color-system-neon)" }}
       animate={isHot ? { opacity: [0.2, 0.5, 0.2] } : {}}
       transition={{ duration: 3, repeat: Infinity, delay: index * 0.05 }}
     />
