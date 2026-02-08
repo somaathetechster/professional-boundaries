@@ -1,7 +1,7 @@
 // app/api/reality/route.ts
 import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
-import { AuditResponse } from '@/lib/types'; // Using your new type definition
+import { AuditResponse } from '../../../lib/types'; // Using your new type definition
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
