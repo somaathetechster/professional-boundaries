@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+// NEW: Import the sound engine
+import { useSound } from '../../hooks/use-sound';
 
 const NAV_ITEMS = [
   { name: 'Translate', path: '/translate' },
@@ -16,15 +18,28 @@ const NAV_ITEMS = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  
+  // NEW: Initialize sound engine
+  const { playHover, playClick } = useSound();
+
+  // Helper to combine sound + action for mobile links
+  const handleMobileNavClick = () => {
+    playClick();
+    setIsOpen(false);
+  };
 
   return (
-    // FIX 1: Used !bg-[#000000] (Hard Hex + Important) to force solid black
-    // This bypasses any missing 'black' in your tailwind.config.js
+    // PRESERVED: !bg-[#000000] for solid black background
     <nav className="fixed top-0 w-full z-[9999] border-b border-white/10 !bg-[#000000] h-16">
       <div className="h-full px-6 flex justify-between items-center max-w-7xl mx-auto">
         
-        {/* LOGO */}
-        <Link href="/" className="flex items-center gap-4 group z-[10000]">
+        {/* LOGO - Adds Audio Triggers */}
+        <Link 
+          href="/" 
+          onClick={playClick}
+          onMouseEnter={playHover}
+          className="flex items-center gap-4 group z-[10000]"
+        >
           <div className="relative">
             <div className="w-2 h-2 bg-system-neon rounded-full z-10 relative" />
             <div className="absolute inset-0 bg-system-neon blur-[8px] opacity-50 group-hover:opacity-100 transition-opacity" />
@@ -40,6 +55,9 @@ export function Navbar() {
             <Link 
               key={item.path} 
               href={item.path}
+              // NEW: Audio Triggers
+              onMouseEnter={playHover}
+              onClick={playClick}
               className={`text-[10px] uppercase tracking-widest transition-all hover:text-system-neon hover:tracking-[0.25em] duration-300 ${
                 pathname === item.path ? 'text-system-neon' : 'text-white/40'
               }`}
@@ -56,7 +74,10 @@ export function Navbar() {
 
         {/* MOBILE HAMBURGER BUTTON */}
         <button 
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            playClick(); // Click sound on toggle
+            setIsOpen(!isOpen);
+          }}
           className="md:hidden flex flex-col gap-1.5 p-2 z-[10000] relative group"
         >
           <motion.div 
@@ -82,7 +103,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            // FIX 2: Also used !bg-[#000000] here to ensure the mobile menu is solid
+            // PRESERVED: !bg-[#000000] for solid mobile background
             className="md:hidden fixed inset-0 !bg-[#000000] z-[9990] flex flex-col pt-24 px-6"
           >
             <div className="flex flex-col gap-8 font-mono">
@@ -90,7 +111,9 @@ export function Navbar() {
                 <Link 
                   key={item.path}
                   href={item.path}
-                  onClick={() => setIsOpen(false)}
+                  // NEW: Audio Triggers
+                  onMouseEnter={playHover}
+                  onClick={handleMobileNavClick}
                   className="text-3xl text-white/80 hover:text-system-neon uppercase tracking-widest flex items-center justify-between group border-b border-white/10 pb-6"
                 >
                   <span className="group-hover:translate-x-4 transition-transform duration-300">{item.name}</span>

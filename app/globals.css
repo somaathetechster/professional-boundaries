@@ -62,3 +62,40 @@
   from { transform: translateY(0); }
   to { transform: translateY(4px); }
 }
+
+/* ------------------------------------------------------------------
+   SYSTEM UPGRADE: CUSTOM CURSOR & SCROLLBAR
+   ------------------------------------------------------------------ */
+
+/* 1. SURGICAL CURSOR (Global Override) */
+html, body, a, button, input, select, textarea, [role="button"] {
+  /* Forces the "Precision Crosshair" everywhere */
+  cursor: crosshair !important; 
+}
+
+/* 2. SYSTEM SCROLLBAR (Webkit Browsers - Chrome/Safari/Edge) */
+::-webkit-scrollbar {
+  width: 6px;               /* Thin, precise width */
+  height: 6px;              /* Thin height for horizontal scroll */
+  background: #050505;      /* Dark background to match the chassis */
+}
+
+/* The Track (Background) */
+::-webkit-scrollbar-track {
+  background: #050505; 
+  border-left: 1px solid #111; /* Subtle mechanical border */
+}
+
+/* The Handle (Thumb) - Idle State */
+::-webkit-scrollbar-thumb {
+  background: #333;         /* Dark Grey (Stealth Mode) */
+  border-radius: 0px;       /* Boxy, industrial look */
+  border: 1px solid #000;   /* Definition */
+}
+
+/* The Handle (Thumb) - Hover/Active State */
+::-webkit-scrollbar-thumb:hover {
+  background: #00FF41;      /* SYSTEM NEON (Lights up when grabbed) */
+  box-shadow: 0 0 10px #00FF41; /* Radioactive Glow */
+  border: none;
+}

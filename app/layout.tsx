@@ -16,9 +16,6 @@ const jetbrains = JetBrains_Mono({
 export const metadata = {
   title: 'Professional Boundaries | OS',
   description: 'Surgical Authority for Workplace Communication',
-  icons: {
-    icon: '/favicon.ico', 
-  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
