@@ -18,7 +18,9 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 w-full z-[9999] border-b border-white/5 bg-black/80 backdrop-blur-xl h-16">
+    // FIX 1: Used !bg-[#000000] (Hard Hex + Important) to force solid black
+    // This bypasses any missing 'black' in your tailwind.config.js
+    <nav className="fixed top-0 w-full z-[9999] border-b border-white/10 !bg-[#000000] h-16">
       <div className="h-full px-6 flex justify-between items-center max-w-7xl mx-auto">
         
         {/* LOGO */}
@@ -28,7 +30,7 @@ export function Navbar() {
             <div className="absolute inset-0 bg-system-neon blur-[8px] opacity-50 group-hover:opacity-100 transition-opacity" />
           </div>
           <span className="font-mono font-bold tracking-[0.1em] uppercase text-[10px] text-white/60 group-hover:text-white transition-colors">
-            Boundary_OS <span className="text-system-neon">v1.0.5</span>
+            Boundary_OS <span className="text-system-neon">v1.0.7</span>
           </span>
         </Link>
 
@@ -80,8 +82,8 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            // UPDATED: bg-black (Solid) removes all transparency/blur issues
-            className="md:hidden fixed inset-0 bg-black z-[9990] flex flex-col pt-24 px-6"
+            // FIX 2: Also used !bg-[#000000] here to ensure the mobile menu is solid
+            className="md:hidden fixed inset-0 !bg-[#000000] z-[9990] flex flex-col pt-24 px-6"
           >
             <div className="flex flex-col gap-8 font-mono">
               {NAV_ITEMS.map((item, i) => (
