@@ -66,3 +66,22 @@ export interface LadderStep {
     risk: number;
   };
 }
+
+// ------------------------------------------------------------------
+// LEDGER SYSTEM (The "Bank" of Authority)
+// ------------------------------------------------------------------
+
+export interface LedgerEntry {
+  id: string;
+  timestamp: number; // Unix timestamp
+  type: 'TRANSLATION' | 'AUDIT';
+  inputSnippet: string; // The first 60 chars of what they sent you
+  label: string;        // e.g., "SCOPE_CREEP" or "PASSIVE"
+  
+  // The "Financials"
+  metrics: {
+    aggression: number; // Risk
+    authority: number;  // Asset Value
+  };
+}
+// FORCE_UPDATE_VERCEL_BUILD_V2
